@@ -1,3 +1,10 @@
+type test struct {
+	field            int64     `db:"-"` // Is ignored when the query is created
+	field2            int64     `db:"field2"`
+
+}
+
+
 var tables = map[string]string{
 	"structName": "db_table_name",
 }
