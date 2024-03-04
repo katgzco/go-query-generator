@@ -1,3 +1,9 @@
+import (
+	"errors"
+	"reflect"
+)
+
+
 type test struct {
 	field            int64     `db:"-"` // Is ignored when the query is created
 	field2            int64     `db:"field2"`
@@ -8,6 +14,8 @@ type test struct {
 var tables = map[string]string{
 	"structName": "db_table_name",
 }
+
+const structTag = "db"
 
 /*
 *
@@ -29,7 +37,6 @@ func QueryConstructor(i interface{}) (string, string, string, []interface{}, err
 		return "", "", "", nil, errors.New("[QueryConstructor] not a struct or is a pointer")
 	}
 	valueType := reflect.ValueOf(i) // Get the type
-	fmt.Println("valueType: ", valueType)
 	lenFieldStruct = int(valueType.NumField()) // len of struct fields
 	for i := 0; i < lenFieldStruct; i++ {
 		tag := valueType.Type().Field(i).Tag.Get(structTag)
